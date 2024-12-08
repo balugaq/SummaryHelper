@@ -3,17 +3,23 @@ package com.balugaq.summaryhelper.implementation;
 
 import com.balugaq.summaryhelper.api.CachedRequest;
 import com.balugaq.summaryhelper.core.commands.MainCommand;
-import com.balugaq.summaryhelper.core.commands.list.getTimingsCommand;
+import com.balugaq.summaryhelper.core.commands.list.FindNearestSlimefunBlockCommand;
+import com.balugaq.summaryhelper.core.commands.list.GetTimingsCommand;
+import com.balugaq.summaryhelper.core.commands.list.TpChunkCommand;
+import com.balugaq.summaryhelper.core.commands.list.TpHighestLagBlockCommand;
 import com.balugaq.summaryhelper.core.listeners.SlimefunTickDoneListener;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
+import lombok.Getter;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+@Getter
 public class SummaryHelper extends JavaPlugin implements SlimefunAddon {
     private static SummaryHelper instance;
     private final Queue<CachedRequest> requests = new LinkedList<>();
@@ -21,7 +27,8 @@ public class SummaryHelper extends JavaPlugin implements SlimefunAddon {
     public static SummaryHelper getInstance() {
         return instance;
     }
-    public CachedRequest pollRequest() {
+
+    public @Nullable CachedRequest pollRequest() {
         return requests.poll();
     }
 
@@ -46,7 +53,10 @@ public class SummaryHelper extends JavaPlugin implements SlimefunAddon {
         PluginCommand command = this.getCommand("summaryhelper");
         if (command != null) {
             command.setExecutor(new MainCommand(this, List.of(
-                    new getTimingsCommand()
+                    new GetTimingsCommand(),
+                    new FindNearestSlimefunBlockCommand(),
+                    new TpChunkCommand(),
+                    new TpHighestLagBlockCommand()
             )));
         } else {
             getLogger().warning("Failed to register command 'summaryhelper'.");

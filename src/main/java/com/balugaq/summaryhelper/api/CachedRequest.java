@@ -12,6 +12,7 @@ public class CachedRequest {
     private final CommandSender sender;
     private final long timestamp;
     private final Consumer<Map<Location, Long>> callback;
+
     public CachedRequest(CommandSender sender, Consumer<Map<Location, Long>> callback) {
         this.sender = sender;
         this.timestamp = System.currentTimeMillis();

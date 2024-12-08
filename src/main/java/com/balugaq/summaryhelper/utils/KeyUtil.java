@@ -6,6 +6,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
+@SuppressWarnings("unused")
 @UtilityClass
 public class KeyUtil {
 

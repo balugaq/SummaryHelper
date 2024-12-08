@@ -10,6 +10,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+@SuppressWarnings("unused")
 @UtilityClass
 public class PersistentUtil {
     public static <T, Z> Z get(@Nullable ItemStack itemStack, @NotNull PersistentDataType<T, Z> dataType, @NotNull NamespacedKey key) {

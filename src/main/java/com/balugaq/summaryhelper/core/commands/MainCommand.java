@@ -1,6 +1,5 @@
 package com.balugaq.summaryhelper.core.commands;
 
-import com.balugaq.summaryhelper.implementation.SummaryHelper;
 import lombok.Getter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -24,9 +23,16 @@ public class MainCommand implements TabExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        if (!sender.isOp()) {
+            sender.sendMessage("You don't have permission to use this command.");
+            return true;
+        }
+
         for (SubCommand subCommand : subCommands) {
-            if (subCommand.onCommand(sender, command, label, args)) {
-                return true;
+            if (subCommand.getIdentifier().equalsIgnoreCase(args[0])) {
+                if (subCommand.onCommand(sender, command, label, args)) {
+                    return true;
+                }
             }
         }
 
@@ -34,7 +40,10 @@ public class MainCommand implements TabExecutor {
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String @NotNull [] args) {
+        if (!sender.isOp()) {
+            return null;
+        }
         List<String> completions = new ArrayList<>();
         if (args.length == 1) {
             for (SubCommand subCommand : subCommands) {

@@ -12,8 +12,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@SuppressWarnings({"unchecked", "unused"})
 public class SlimefunTickDoneListener {
     public final AtomicInteger tickPassed = new AtomicInteger(0);
+
     public SlimefunTickDoneListener() {
         Bukkit.getScheduler().runTaskTimer(SummaryHelper.getInstance(), () -> {
             AtomicInteger tickPassed = (AtomicInteger) ReflectionUtil.getValue(Slimefun.getProfiler(), "ticksPassed");
@@ -29,14 +31,15 @@ public class SlimefunTickDoneListener {
     }
 
     public void onSlimefunTickDone(int tickPassed) {
-        // Map<ProfiledBlock, Long>
         Object timingsObject = ReflectionUtil.getValue(Slimefun.getProfiler(), "timings");
         Map<Object, Long> timingsMap = (Map<Object, Long>) timingsObject;
+        assert timingsMap != null;
         Map<Location, Long> timings = new HashMap<>();
         for (Map.Entry<Object, Long> entry : timingsMap.entrySet()) {
             Object block = entry.getKey();
             long time = entry.getValue();
-            long position = (long) ReflectionUtil.getValue(block, "position");
+            Long position = (Long) ReflectionUtil.getValue(block, "position");
+            assert position != null;
             World world = (World) ReflectionUtil.getValue(block, "world");
             int x = (int) (position >> 38);
             int y = (int) (position & 4095L);
@@ -44,7 +47,7 @@ public class SlimefunTickDoneListener {
             Location location = new Location(world, x, y, z);
             timings.put(location, time);
         }
-        SummaryHelper.getInstance().getLogger().info("Slimefun tick done. TimingsSize: " + timings.size() + " TicksPassed: " + tickPassed);
+
         int handledRequests = 0;
         while (SummaryHelper.getInstance().getRequestCount() > 0) {
             CachedRequest request = SummaryHelper.getInstance().pollRequest();

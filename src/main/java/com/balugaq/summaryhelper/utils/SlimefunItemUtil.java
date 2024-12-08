@@ -9,13 +9,11 @@ import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import lombok.experimental.UtilityClass;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-
+@SuppressWarnings("unused")
 @UtilityClass
 public class SlimefunItemUtil {
     @CanIgnoreReturnValue
-    public static @NotNull SlimefunItem registerItem(@NotNull SlimefunItem item, SlimefunAddon addon) {
+    public static @NotNull SlimefunItem registerItem(@NotNull SlimefunItem item, @NotNull SlimefunAddon addon) {
         item.register(addon);
         return item;
     }

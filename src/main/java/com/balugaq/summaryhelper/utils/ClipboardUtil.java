@@ -9,7 +9,7 @@ import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-@SuppressWarnings("deprecation")
+@SuppressWarnings({"deprecation", "unused"})
 @UtilityClass
 public class ClipboardUtil {
     public static void send(@NotNull Player player, String text) {
