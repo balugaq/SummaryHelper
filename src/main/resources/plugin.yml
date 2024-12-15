@@ -1,0 +1,10 @@
+name: SummaryHelper
+version: ${project.version}
+main: com.balugaq.summaryhelper.implementation.SummaryHelper
+api-version: 1.18
+depend: [ Slimefun ]
+authors: [ balugaq ]
+commands:
+  summaryhelper:
+    aliases:
+      - sh
