@@ -8,8 +8,12 @@ import com.balugaq.summaryhelper.core.commands.list.GetTimingsCommand;
 import com.balugaq.summaryhelper.core.commands.list.TpChunkCommand;
 import com.balugaq.summaryhelper.core.commands.list.TpHighestLagBlockCommand;
 import com.balugaq.summaryhelper.core.listeners.SlimefunTickDoneListener;
+import com.balugaq.summaryhelper.core.managers.ConfigManager;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import lombok.Getter;
+import net.guizhanss.guizhanlibplugin.bstats.bukkit.Metrics;
+import net.guizhanss.guizhanlibplugin.bstats.charts.SimplePie;
+import net.guizhanss.guizhanlibplugin.updater.GuizhanUpdater;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -22,6 +26,10 @@ import java.util.Queue;
 @Getter
 public class SummaryHelper extends JavaPlugin implements SlimefunAddon {
     private static SummaryHelper instance;
+    private final String username = "balugaq";
+    private final String repo = "SummaryHelper";
+    private final String branch = "master";
+    private ConfigManager configManager;
     private final Queue<CachedRequest> requests = new LinkedList<>();
 
     public static SummaryHelper getInstance() {
@@ -48,6 +56,9 @@ public class SummaryHelper extends JavaPlugin implements SlimefunAddon {
     @Override
     public void onEnable() {
         getLogger().info("Loading SummaryHelper...");
+
+        getLogger().info("Loading config...");
+        configManager = new ConfigManager(this);
 
         getLogger().info("Loading commands...");
         PluginCommand command = this.getCommand("summaryhelper");
@@ -87,5 +98,29 @@ public class SummaryHelper extends JavaPlugin implements SlimefunAddon {
     @Override
     public String getBugTrackerURL() {
         return "https://github.com/balugaq/SummaryHelper/issues";
+    }
+    private void loadMetrics() {
+        try {
+            Metrics metrics = new Metrics(this, 49544);
+            boolean enableAutoUpdate = getConfigManager().isAutoUpdate();
+            boolean enableDebug = getConfigManager().isDebug();
+            String autoUpdates = String.valueOf(enableAutoUpdate);
+            String debug = String.valueOf(enableDebug);
+            metrics.addCustomChart(new SimplePie("auto_updates", () -> autoUpdates));
+            metrics.addCustomChart(new SimplePie("debug", () -> debug));
+        } catch (NoClassDefFoundError | NullPointerException | UnsupportedClassVersionError e) {
+            getLogger().info("Metrics 加载失败: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    public void tryUpdate() {
+        try {
+            if (configManager.isAutoUpdate() && getDescription().getVersion().startsWith("Build")) {
+                GuizhanUpdater.start(this, getFile(), username, repo, branch);
+            }
+        } catch (NoClassDefFoundError | NullPointerException | UnsupportedClassVersionError e) {
+            getLogger().info("自动更新失败: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }
