@@ -6,7 +6,7 @@
 
     <groupId>com.balugaq</groupId>
     <artifactId>SummaryHelper</artifactId>
-    <version>5</version>
+    <version>6</version>
     <packaging>jar</packaging>
 
     <name>SummaryHelper</name>
