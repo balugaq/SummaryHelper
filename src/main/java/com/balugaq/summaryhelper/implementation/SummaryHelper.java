@@ -5,6 +5,8 @@ import com.balugaq.summaryhelper.api.CachedRequest;
 import com.balugaq.summaryhelper.core.commands.MainCommand;
 import com.balugaq.summaryhelper.core.commands.list.FindNearestSlimefunBlockCommand;
 import com.balugaq.summaryhelper.core.commands.list.GetTimingsCommand;
+import com.balugaq.summaryhelper.core.commands.list.ReloadCommand;
+import com.balugaq.summaryhelper.core.commands.list.TaskCommand;
 import com.balugaq.summaryhelper.core.commands.list.TpChunkCommand;
 import com.balugaq.summaryhelper.core.commands.list.TpHighestLagBlockCommand;
 import com.balugaq.summaryhelper.core.listeners.SlimefunTickDoneListener;
@@ -67,7 +69,9 @@ public class SummaryHelper extends JavaPlugin implements SlimefunAddon {
                     new GetTimingsCommand(),
                     new FindNearestSlimefunBlockCommand(),
                     new TpChunkCommand(),
-                    new TpHighestLagBlockCommand()
+                    new TpHighestLagBlockCommand(),
+                    new ReloadCommand(),
+                    new TaskCommand()
             )));
         } else {
             getLogger().warning("Failed to register command 'summaryhelper'.");
