@@ -1,5 +1,6 @@
 package com.balugaq.summaryhelper.core.commands;
 
+import io.github.thebusybiscuit.slimefun4.libraries.dough.common.ChatColors;
 import lombok.Getter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -24,7 +25,12 @@ public class MainCommand implements TabExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!sender.isOp()) {
-            sender.sendMessage("You don't have permission to use this command.");
+            sender.sendMessage(ChatColors.color("&cYou don't have permission to use this command."));
+            return true;
+        }
+
+        if (args.length == 0) {
+            sender.sendMessage(ChatColors.color("&cUsage: /sh <subcommand>"));
             return true;
         }
 
